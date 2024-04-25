@@ -12,12 +12,11 @@ if client_id is None or client_secret is None:
     print("ERROR: Set SPOTIPY_CLIENT_ID and SPOTIPY_CLIENT SECRET environment variables")
 
 #Entering the URI of the playlist
-playlist_uri = "spotify:playlist:37i9dQZF1EJzGGGOWOiITB"
 scope = "playlist-read-private, playlist-modify-private, playlist-modify-public"
 spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
 
-playlist1 = spotify.playlist_tracks('37i9dQZF1EJzGGGOWOiITB')
-playlist2 = spotify.playlist_tracks('6CPMN5JBkcD4Sk9vD0OIOA')
+playlist1 = spotify.playlist_tracks('<Insert Playlist ID>')
+playlist2 = spotify.playlist_tracks('<Insert Playlist ID>')
 
 """
 Input: playlist1
