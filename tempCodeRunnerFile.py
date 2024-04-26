@@ -1,5 +1,5 @@
 import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
+from spotipy.oauth2 import SpotifyOAuth
 import os
 import json
 
@@ -14,37 +14,14 @@ if client_id is None or client_secret is None:
 
 #Entering the URI of the playlist
 playlist_uri = "spotify:playlist:37i9dQZF1EJzGGGOWOiITB"
-scope = "playlist-read-private, playlist-modify-private"
+scope = "playlist-read-private, playlist-modify-private, playlist-modify-public"
 spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
 
 playlist1 = spotify.playlist_tracks('37i9dQZF1EJzGGGOWOiITB')
-playlsit2 = spotify.playlist_tracks('6CPMN5JBkcD4Sk9vD0OIOA')
+playlist2 = spotify.playlist_tracks('6CPMN5JBkcD4Sk9vD0OIOA')
 
-"""
-Input: playlist1
-Output: ids
-This function serves to parse through a playlist and return all of the song IDs.
-"""
+# print(json.dumps(playlist2, indent=4))
 
-def parsep1(playlist1):
-    uris = []
-    for item in playlist1['items']:
-        track = item['track']
-        uri = track['uri']
-        uris.append(uri)
-    return uris
-
-"""
-Input: playlist2, ids
-Output: None
-This function serves to add songs from one playlist to another.
-"""
-
-def addp2(playlist2, uris):
-    existing_uris = [item['track']['uri'] for item in playlist2['items']]
-    uris_to_add = [uri for uri in uris if uri not in existing_uris]
-    if uris_to_add:
-        spotify.playlist_add_items('6CPMN5JBkcD4Sk9vD0OIOA', uris_to_add)
-
-uris = parsep1(playlist1)
-addp2(playlsit2, uris)
+for items in playlist2['items']:
+    track_id = items['track']['id']
+    print(id)
