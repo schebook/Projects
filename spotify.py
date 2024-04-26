@@ -42,7 +42,7 @@ def addp2(playlist2, uris):
     existing_uris = [item['track']['uri'] for item in playlist2['items']]
     uris_to_add = [uri for uri in uris if uri not in existing_uris]
     if uris_to_add:
-        spotify.playlist_add_items(playlist2, uris_to_add)
+        spotify.playlist_add_items(<Insert Playlist2 ID>, uris_to_add)
 
 uris = parsep1(playlist1)
 addp2(playlist2, uris)
