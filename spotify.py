@@ -24,6 +24,7 @@ def authenticate():
         scope = "playlist-read-private, playlist-modify-private, playlist-modify-public"
         spotify = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=client_redirect, scope=scope))
 
+        print("Authentication successful.")
         return spotify
     
     except spotipy.oauth2.SpotifyOauthError as auth_error:
@@ -41,6 +42,7 @@ There should only be 50 songs at any given time, so no need to make a while loop
 """
 
 def parse_playlist(spotify, playlist_id, handle_pagination = True):
+    print(f"Parsing playlist {playlist_id}")
     try:
         tracks = []
         results = spotify.playlist_tracks(playlist_id)
@@ -50,6 +52,7 @@ def parse_playlist(spotify, playlist_id, handle_pagination = True):
             results = spotify.next(results)
             tracks.extend(item['track']['uri'] for item in results['items'])
         
+        print(f"Found {len(tracks)} tracks.")
         return tracks
     except Exception as e:
         print(f"An unexpected error occured: {e}")
@@ -85,31 +88,40 @@ def addTracks(spotify, source_playlist, target_playlist):
     source_tracks = parse_playlist(spotify, source_playlist, handle_pagination=True )
     target_tracks = parse_playlist(spotify, target_playlist, handle_pagination=True)
 
+    if source_tracks is None or target_tracks is None:
+        print("Failed to retrieve tracks from one or both playlists.")
+        return
+
     tracks_to_add = []
     for tracks in source_tracks:
         if tracks not in target_tracks:
             tracks_to_add.append(tracks)
     
     if tracks_to_add:
+        print(f"Adding tracks from {source_playlist} to {target_playlist}.")
         try:
             spotify.playlist_add_items(target_playlist, tracks_to_add)
         except Exception as e:
             print(f"An unexpected error has occured: {e}")
+    else:
+        print("No tracks added.")
 
-
+"""
+Input: None
+Output: None
+Main function used to run authentication and handle playlists. 
+"""
+#Not using the removeDupes function as it shouldn't be necessary.
 def main():
+    print("Starting the application...")
     spotify = authenticate()
     if not spotify:
         print("Failed to authenticate with Spotify")
         return
-    
-    source_playlist_id = "37i9dQZF1EJzGGGOWOiITB"
-    target_playlist_id = "6CPMN5JBkcD4Sk9vD0OIOA"
 
-    #Adding tracks from the source playlist to the target playlist.
-    addTracks(spotify, source_playlist_id, target_playlist_id)
-    
-
+    print("Authentication successful. Fetching tracks...")
+    addTracks(spotify, "37i9dQZF1EJzGGGOWOiITB", "6CPMN5JBkcD4Sk9vD0OIOA")
+    print("Tracks processing complete.")
 
 if __name__ == "__main__":
     main()
