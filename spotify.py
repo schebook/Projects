@@ -120,7 +120,7 @@ def main():
         return
 
     print("Authentication successful. Fetching tracks...")
-    addTracks(spotify, "37i9dQZF1EJzGGGOWOiITB", "6CPMN5JBkcD4Sk9vD0OIOA")
+    addTracks(spotify, "<Redacted>", "<Redacted>")
     print("Tracks processing complete.")
 
 if __name__ == "__main__":
